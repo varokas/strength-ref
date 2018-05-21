@@ -1,0 +1,10 @@
+{
+    "name": "Bear Strength API documentation",
+    "version": "1.0.0",
+    "url": "http://localhost:3000",
+    "sampleUrl": "http://localhost:3000",
+    "description": "Bear Strength API documentation",
+    "template": {
+        "forceLanguage": "en"
+    }
+}

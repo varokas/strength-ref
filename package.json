@@ -1,0 +1,16 @@
+{
+  "name": "strength-ref",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "apidoc": "apidoc -e \"(node_modules|public)\" -o public/apidoc",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apidoc": "^0.17.6",
+    "express": "^4.16.3"
+  }
+}
