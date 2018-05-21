@@ -1,5 +1,7 @@
 # Bear Strength Reference Implementation
 
+From this project: https://github.com/bigbearsio/strength
+
 A reference implementation of expected functional behavior of the service. 
 
 This is neither performant nor thead safe but it should serve as a documentation of how the service is expected to behave. 
