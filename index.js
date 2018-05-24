@@ -14,14 +14,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 /**
- * @api {get} /remaining/:noOfSeats Get Remaining Seat(s)
+ * @api {get} /remaining Get Remaining Seat(s)
  * @apiName GetRemaining
  * @apiGroup Tickets
  * @apiDescription This endpoint should return a list of available seats in the current round
  * 
- * @apiParam {Number} noOfSeats No. of available seats (return all available seats if not specify)
- * 
- * @apiSuccess {String[]} seats List of seat no.
+ * @apiSuccess {String[]} seats List of seat no. (Up to 10 seats)
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    {
@@ -32,22 +30,22 @@ app.use(bodyParser.json())
  *      ]
  *    }
  */
-app.get('/remaining/:noOfSeats*?', function(req, res) {
-    const result = book.getRemaining(req.params.noOfSeats)
-    res.json({ seats: result})
+app.get('/remaining', function(req, res) {
+    const result = book.getRemaining()
+    res.json({ seats: result })
 })
 
 /**
- * @api {post} /book Book a Seat
+ * @api {post} /book Book the Seat
  * @apiGroup Tickets
- * @apiDescription This endpoint should return a ticket which can be any seat in the current round
+ * @apiDescription This endpoint required seat no. and will return the ticket if it available, otherwise will return false
  * 
  * Rule:
  * 1. No duplicate tickets (same round, same seat) can be given to any clients
  * 2. All seats in the current round has to be given out first before next round can be open.
  * 3. Seats can be given out in any order that still respect rule (2).
  * 
- * @apiParam {String} seat For reserve specific seat (seat will be random if not specify or duplicate)
+ * @apiParam {String} seat The seat no. that user want to reserve.
  * 
  * @apiSuccess {Boolean} success Status of seat reservation
  * @apiSuccess {Number} round Round number for this ticket
@@ -61,13 +59,10 @@ app.get('/remaining/:noOfSeats*?', function(req, res) {
  *      "seat": "A1",
  *      "reserve_expired_time": 1527009296459
  *    }
- * @apiError {Boolean} success Status of seat reservation
- * @apiError {String} error The reason of error
  * @apiErrorExample {json} Error
  *    HTTP/1.1 403 Forbidden
  *    {
  *      "success": false,
-*       "error": "no seat available"
  *    }
  */
 app.post('/book', function(req, res) {
@@ -97,9 +92,9 @@ app.post('/book', function(req, res) {
 app.post('/confirm', function(req, res) {
     const result = book.confirm(req.body.seat)
     if (result) {
-        res.json({ status: result })
+        res.json({ success: result })
     } else {
-        res.status(403).json({ status: result })
+        res.status(403).json({ success: result })
     }
 })
 
@@ -121,9 +116,9 @@ app.post('/confirm', function(req, res) {
 app.post('/cancel', function(req, res) {
     const result = book.cancel(req.body.seat)
     if (result) {
-        res.json({ status: result })
+        res.json({ success: result })
     } else {
-        res.status(403).json({ status: result })
+        res.status(403).json({ success: result })
     }
 })
 

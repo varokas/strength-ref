@@ -51,24 +51,11 @@
   },
   {
     "type": "get",
-    "url": "/remaining/:noOfSeats",
+    "url": "/remaining",
     "title": "Get Remaining Seat(s)",
     "name": "GetRemaining",
     "group": "Tickets",
     "description": "<p>This endpoint should return a list of available seats in the current round</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "noOfSeats",
-            "description": "<p>No. of available seats (return all available seats if not specify)</p>"
-          }
-        ]
-      }
-    },
     "success": {
       "fields": {
         "Success 200": [
@@ -77,7 +64,7 @@
             "type": "String[]",
             "optional": false,
             "field": "seats",
-            "description": "<p>List of seat no.</p>"
+            "description": "<p>List of seat no. (Up to 10 seats)</p>"
           }
         ]
       },
@@ -94,16 +81,16 @@
     "groupTitle": "Tickets",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/remaining/:noOfSeats"
+        "url": "http://localhost:3000/remaining"
       }
     ]
   },
   {
     "type": "post",
     "url": "/book",
-    "title": "Book a Seat",
+    "title": "Book the Seat",
     "group": "Tickets",
-    "description": "<p>This endpoint should return a ticket which can be any seat in the current round</p> <p>Rule:</p> <ol> <li>No duplicate tickets (same round, same seat) can be given to any clients</li> <li>All seats in the current round has to be given out first before next round can be open.</li> <li>Seats can be given out in any order that still respect rule (2).</li> </ol>",
+    "description": "<p>This endpoint required seat no. from user and will return the ticket if it available, otherwise will return false</p> <p>Rule:</p> <ol> <li>No duplicate tickets (same round, same seat) can be given to any clients</li> <li>All seats in the current round has to be given out first before next round can be open.</li> <li>Seats can be given out in any order that still respect rule (2).</li> </ol>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -112,7 +99,7 @@
             "type": "String",
             "optional": false,
             "field": "seat",
-            "description": "<p>For reserve specific seat (seat will be random if not specify or duplicate)</p>"
+            "description": "<p>The seat no. that user want to reserve.</p>"
           }
         ]
       }
@@ -159,28 +146,10 @@
       ]
     },
     "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "Boolean",
-            "optional": false,
-            "field": "success",
-            "description": "<p>Status of seat reservation</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "error",
-            "description": "<p>The reason of error</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Error",
-          "content": "HTTP/1.1 403 Forbidden\n{\n  \"success\": false,\n   \"error\": \"no seat available\"\n}",
+          "content": "HTTP/1.1 403 Forbidden\n{\n  \"success\": false,\n}",
           "type": "json"
         }
       ]

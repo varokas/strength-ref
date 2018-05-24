@@ -19,11 +19,6 @@ describe('book module', function () {
         expect(seats.length).to.be.equal(10)
     })
 
-    it('can get only 1 remaining seat', () => {
-        const seats = book.getRemaining(1)
-        expect(seats.length).to.be.equal(1)
-    })
-
     it('should successfully reserve a seat', () => {
         const seat = book.reserve('A1')
 
@@ -35,13 +30,25 @@ describe('book module', function () {
         const seat1 = book.reserve('A1')
         const seat2 = book.reserve('A1')
 
-        expect(seat1).to.has.property('seat')
-        expect(seat2).to.has.property('seat')
-        expect(seat1.seat).to.be.not.eql(seat2.seat)
+        expect(seat1).to.has.property('success')
+        expect(seat2).to.has.property('success')
+        expect(seat1.success).to.be.true
+        expect(seat2.success).to.be.false
+    })
+
+    it(`shouldn't success if book with invalid seat`, () => {
+        let seat
+        seat = book.reserve()
+        expect(seat.success).to.be.false
+        seat = book.reserve(null)
+        expect(seat.success).to.be.false
+        seat = book.reserve('A9999')
+        expect(seat.success).to.be.false
     })
 
     it('can get all bookings', () => {
-        const seat = book.reserve()
+        const seatNo = 'A1'
+        const seat = book.reserve(seatNo)
         book.confirm(seat.seat)
         const bookings = book.getBookings()
         expect(bookings).to.be.an('array')
@@ -51,10 +58,11 @@ describe('book module', function () {
     })
 
     it('can cancel reserved and confirmed seat', () => {
-        let seat = book.reserve()
+        const seatNo = 'A1'
+        let seat = book.reserve(seatNo)
         expect(book.cancel(seat.seat)).to.be.true
 
-        seat = book.reserve()
+        seat = book.reserve(seatNo)
         book.confirm(seat.seat)
         expect(book.cancel(seat.seat)).to.be.true
         
@@ -66,15 +74,20 @@ describe('book module', function () {
     })
 
     it('should go to next round when no seat available', () => {
-        const seats = book.getRemaining()
+        const seatNo = 'A1'
         const result = []
-        for (let i = 0; i < seats.length; i += 1) {
-            const seatNo = seats[i]
-            const seat = book.reserve(seatNo)
+        let seats = book.getRemaining()
+
+        while (seats.length > 1) {
+            const seat = book.reserve(seats[0])
             expect(book.confirm(seat.seat)).to.be.true
             result.push(seat)
+            seats = book.getRemaining()
         }
-        const newRoundSeat = book.reserve()
+        const seat = book.reserve(seats[0])
+        expect(book.confirm(seat.seat)).to.be.true
+        
+        const newRoundSeat = book.reserve(seatNo)
         expect(newRoundSeat).to.has.property('round')
         expect(newRoundSeat.round).to.not.equal(result[0].round)
         expect(book.getBookings().length).to.equal(2)
@@ -100,17 +113,14 @@ describe('book module', function () {
 
     it('should cannot confirm after reserve expire and that seat become available', (done) => {
         const seatNo = 'A1'
-        let seats = book.getRemaining()
-        const maxSeats = seats.length
         let seat = book.reserve(seatNo)
-        seats = book.getRemaining()
-        expect(seats.length).to.equal(maxSeats-1)
+        expect(book.reserve(seatNo).success).to.be.false
         setTimeout(() => {
             const result = book.confirm(seat.seat)
             expect(result).to.be.false
-            seats = book.getRemaining()
-            expect(seats.length).to.equal(maxSeats)
+            
             seat = book.reserve(seatNo)
+            expect(seat.success).to.be.true
             expect(seat.seat).to.eql(seatNo)
             done()
         }, 600)
