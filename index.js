@@ -131,7 +131,7 @@ app.post('/cancel', (req, res) => {
  * It does not have to be performant nor concurrent safe, but this should be 
  * representative of all confirmed tickets booked from all the client
  * 
- * @apiSuccess {String[]} bookings              List of all bookings groupped by round
+ * @apiSuccess {String[]} bookings              List of all bookings
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    [
