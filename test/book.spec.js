@@ -52,8 +52,7 @@ describe('book module', function () {
         const bookings = book.getBookings()
         expect(bookings).to.be.an('array')
         expect(bookings).to.has.length(1)
-        expect(bookings[0]).to.has.property('seats')
-        expect(bookings[0].seats).to.be.eql([seat.seat])
+        expect(bookings[0]).to.be.equal(seatNo)
     })
 
     it('can cancel reserved and confirmed seat', () => {
@@ -67,9 +66,7 @@ describe('book module', function () {
         
         const bookings = book.getBookings()
         expect(bookings).to.be.an('array')
-        expect(bookings).to.has.length(1)
-        expect(bookings[0]).to.has.property('seats')
-        expect(bookings[0].seats).to.be.eql([])
+        expect(bookings).to.has.length(0)
     })
 
     it('should cancel seat', () => {
@@ -105,13 +102,19 @@ describe('book module', function () {
         }, 600)
     })
 
-    it('should return all unconfirmed ticket', (done) => {
-        expect(book.getAvailableTickets()).to.has.length(10)
-        book.getAvailableTickets().forEach((elem) => {
-            expect(elem).to.has.property("status")
-            expect(elem).to.has.property("seatNumber")
-            expect(elem.status == "available" || elem.status == "reserved").to.be.true
+    it('should return all unconfirmed ticket', () => {
+        expect(book.reserve('A1').success).to.be.true
+        expect(book.getUnconfirmed()).to.has.length(1)
+        book.getUnconfirmed().forEach((elem) => {
+            expect(elem).to.be.equal('A1')
         })
-        done()
+    })
+
+    it('should return empty list after book but does not confirm', (done) =>{
+        expect(book.reserve('A1').success).to.be.true
+        setTimeout(() => {
+            expect(book.getUnconfirmed()).to.has.length(0)
+            done()
+        }, 600)
     })
 })

@@ -131,18 +131,37 @@ app.post('/cancel', (req, res) => {
  * It does not have to be performant nor concurrent safe, but this should be 
  * representative of all confirmed tickets booked from all the client
  * 
- * @apiSuccess {Object[]} bookings              List of all bookings groupped by round
- * @apiSuccess {Number}   bookings.round        Round number
- * @apiSuccess {String[]} bookings.seats        Seats in current round
+ * @apiSuccess {String[]} bookings              List of all bookings groupped by round
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    [
- *      { "round": 1, "seats": ["A2","A3","A4"] }
- *      { "round": 2, "seats": ["A2","A3","A4"] }
+ *      "A1"
  *    ]
  */
 app.get('/bookings', (req, res) => {
     res.send(book.getBookings())
+})
+
+/**
+ * @api {get} /tickets/unconfirmed Get all unconfirmed ticket
+ * @apiGroup Tickets
+ * @apiDescription This endpoint return unconfirmed ticket.
+ * @apiSuccess {int}        count   Number of unconfirmed seat
+ * @apiSuccess {String[]}   seat    Unconfirmed seats
+ * @apiSuccessExample {json} Success
+ *      HTTP/1.1 200 OK
+ *      {
+ *          count: 1,
+ *          seats: [ "A1" ]
+ *      }
+ * 
+ */
+app.get('/tickets/unconfirmed', (req, res) => {
+    const unconfirmed = book.getUnconfirmed()
+    res.json({
+        count: unconfirmed.length,
+        seats: unconfirmed
+    }).end()
 })
 
 app.use("/apidoc", express.static("public/apidoc"))
