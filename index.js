@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
+const config = require('./config.json')
 
 const book = require('./lib/book')
 
@@ -30,7 +31,7 @@ app.use(bodyParser.json())
  *      ]
  *    }
  */
-app.get('/remaining', function(req, res) {
+app.get('/remaining', (req, res) => {
     const result = book.getRemaining()
     res.json({ seats: result })
 })
@@ -65,7 +66,7 @@ app.get('/remaining', function(req, res) {
  *      "success": false,
  *    }
  */
-app.post('/book', function(req, res) {
+app.post('/book', (req, res) => {
     const result = book.reserve(req.body.seat)
     if (result.success) {
         res.json(result)
@@ -89,7 +90,7 @@ app.post('/book', function(req, res) {
  *    }
  * 
  */
-app.post('/confirm', function(req, res) {
+app.post('/confirm', (req, res) => {
     const result = book.confirm(req.body.seat)
     if (result) {
         res.json({ success: result })
@@ -113,7 +114,7 @@ app.post('/confirm', function(req, res) {
  *    }
  * 
  */
-app.post('/cancel', function(req, res) {
+app.post('/cancel', (req, res) => {
     const result = book.cancel(req.body.seat)
     if (result) {
         res.json({ success: result })
@@ -140,7 +141,7 @@ app.post('/cancel', function(req, res) {
  *      { "round": 2, "seats": ["A2","A3","A4"] }
  *    ]
  */
-app.get('/bookings', function(req, res) {  
+app.get('/bookings', (req, res) => {
     res.send(book.getBookings())
 })
 
@@ -148,6 +149,6 @@ app.use("/apidoc", express.static("public/apidoc"))
 
 book.init()
 
-app.listen(3000, function() {  
-    console.log('API Running...')
+app.listen(config.port, () => {  
+    console.log(`API Running... @:${config.port}`)
 })
