@@ -23,7 +23,6 @@ describe('book module', function () {
         const seat = book.reserve('A1')
 
         expect(seat).to.has.property('seat')
-        expect(seat).to.has.property('round')
     })
 
     it('should not reserve the same seat', () => {
