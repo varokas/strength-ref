@@ -72,26 +72,6 @@ describe('book module', function () {
         expect(bookings[0].seats).to.be.eql([])
     })
 
-    it('should go to next round when no seat available', () => {
-        const seatNo = 'A1'
-        const result = []
-        let seats = book.getRemaining()
-
-        while (seats.length > 1) {
-            const seat = book.reserve(seats[0])
-            expect(book.confirm(seat.seat)).to.be.true
-            result.push(seat)
-            seats = book.getRemaining()
-        }
-        const seat = book.reserve(seats[0])
-        expect(book.confirm(seat.seat)).to.be.true
-        
-        const newRoundSeat = book.reserve(seatNo)
-        expect(newRoundSeat).to.has.property('round')
-        expect(newRoundSeat.round).to.not.equal(result[0].round)
-        expect(book.getBookings().length).to.equal(2)
-    })
-
     it('should cancel seat', () => {
         let seats = book.getRemaining()
         let cancelSeatNo = 'B3'
@@ -123,5 +103,15 @@ describe('book module', function () {
             expect(seat.seat).to.eql(seatNo)
             done()
         }, 600)
+    })
+
+    it('should return all unconfirmed ticket', (done) => {
+        expect(book.getAvailableTickets()).to.has.length(10)
+        book.getAvailableTickets().forEach((elem) => {
+            expect(elem).to.has.property("status")
+            expect(elem).to.has.property("seatNumber")
+            expect(elem.status == "available" || elem.status == "reserved").to.be.true
+        })
+        done()
     })
 })
