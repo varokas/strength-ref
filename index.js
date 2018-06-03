@@ -142,28 +142,6 @@ app.get('/bookings', (req, res) => {
     res.send(book.getBookings())
 })
 
-/**
- * @api {get} /tickets/unconfirmed Get all unconfirmed ticket
- * @apiGroup Tickets
- * @apiDescription This endpoint return unconfirmed ticket.
- * @apiSuccess {int}        count   Number of unconfirmed seat
- * @apiSuccess {String[]}   seat    Unconfirmed seats
- * @apiSuccessExample {json} Success
- *      HTTP/1.1 200 OK
- *      {
- *          count: 1,
- *          seats: [ "A1" ]
- *      }
- * 
- */
-app.get('/tickets/unconfirmed', (req, res) => {
-    const unconfirmed = book.getUnconfirmed()
-    res.json({
-        count: unconfirmed.length,
-        seats: unconfirmed
-    }).end()
-})
-
 app.use("/apidoc", express.static("public/apidoc"))
 
 book.init()

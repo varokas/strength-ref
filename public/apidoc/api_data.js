@@ -13,7 +13,7 @@ define({ "api": [
             "type": "String[]",
             "optional": false,
             "field": "bookings",
-            "description": "<p>List of all bookings groupped by round</p>"
+            "description": "<p>List of all bookings</p>"
           }
         ]
       },
@@ -68,49 +68,6 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://localhost:3000/remaining"
-      }
-    ]
-  },
-  {
-    "type": "get",
-    "url": "/tickets/unconfirmed",
-    "title": "Get all unconfirmed ticket",
-    "group": "Tickets",
-    "description": "<p>This endpoint return unconfirmed ticket.</p>",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "count",
-            "description": "<p>Number of unconfirmed seat</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String[]",
-            "optional": false,
-            "field": "seat",
-            "description": "<p>Unconfirmed seats</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success",
-          "content": "HTTP/1.1 200 OK\n{\n    count: 1,\n    seats: [ \"A1\" ]\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "./index.js",
-    "groupTitle": "Tickets",
-    "name": "GetTicketsUnconfirmed",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/tickets/unconfirmed"
       }
     ]
   },
