@@ -11,8 +11,8 @@ This is neither performant nor thead safe but it should serve as a documentation
 
 ## Running
 * Clone the project
-* `npm install`
-* `npm start`
+* `npm install` or `yarn`
+* `npm start` or `yarn start`
 * Browse to `http://localhost:3000/apidoc`
 
 ![Screenshot](public/images/doc-screenshot.png)

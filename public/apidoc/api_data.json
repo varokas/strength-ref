@@ -10,31 +10,17 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Object[]",
-            "optional": false,
-            "field": "bookings",
-            "description": "<p>List of all bookings groupped by round</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "bookings.round",
-            "description": "<p>Round number</p>"
-          },
-          {
-            "group": "Success 200",
             "type": "String[]",
             "optional": false,
-            "field": "bookings.seats",
-            "description": "<p>Seats in current round</p>"
+            "field": "bookings",
+            "description": "<p>List of all bookings</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 OK\n[\n  { \"round\": 1, \"seats\": [\"A2\",\"A3\",\"A4\"] }\n  { \"round\": 2, \"seats\": [\"A2\",\"A3\",\"A4\"] }\n]",
+          "content": "HTTP/1.1 200 OK\n[\n  \"A1\"\n]",
           "type": "json"
         }
       ]

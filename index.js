@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
+const config = require('./config.json')
 
 const book = require('./lib/book')
 
@@ -32,7 +33,7 @@ app.use(bodyParser.json())
  *      unconfimedTicketsCount: 2
  *    }
  */
-app.get('/remaining', function(req, res) {
+app.get('/remaining', (req, res) => {
     const result = book.getRemaining()
     const unconfirm = book.getUnconfirmed()
     res.json({ seats: result, unconfimedTicketsCount: unconfirm.length })
@@ -68,7 +69,7 @@ app.get('/remaining', function(req, res) {
  *      "success": false,
  *    }
  */
-app.post('/book', function(req, res) {
+app.post('/book', (req, res) => {
     const result = book.reserve(req.body.seat)
     if (result.success) {
         res.json(result)
@@ -92,7 +93,7 @@ app.post('/book', function(req, res) {
  *    }
  * 
  */
-app.post('/confirm', function(req, res) {
+app.post('/confirm', (req, res) => {
     const result = book.confirm(req.body.seat)
     if (result) {
         res.json({ success: result })
@@ -116,7 +117,7 @@ app.post('/confirm', function(req, res) {
  *    }
  * 
  */
-app.post('/cancel', function(req, res) {
+app.post('/cancel', (req, res) => {
     const result = book.cancel(req.body.seat)
     if (result) {
         res.json({ success: result })
@@ -133,17 +134,14 @@ app.post('/cancel', function(req, res) {
  * It does not have to be performant nor concurrent safe, but this should be 
  * representative of all confirmed tickets booked from all the client
  * 
- * @apiSuccess {Object[]} bookings              List of all bookings groupped by round
- * @apiSuccess {Number}   bookings.round        Round number
- * @apiSuccess {String[]} bookings.seats        Seats in current round
+ * @apiSuccess {String[]} bookings              List of all bookings
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    [
- *      { "round": 1, "seats": ["A2","A3","A4"] }
- *      { "round": 2, "seats": ["A2","A3","A4"] }
+ *      "A1"
  *    ]
  */
-app.get('/bookings', function(req, res) {  
+app.get('/bookings', (req, res) => {
     res.send(book.getBookings())
 })
 
@@ -151,6 +149,6 @@ app.use("/apidoc", express.static("public/apidoc"))
 
 book.init()
 
-app.listen(3000, function() {  
-    console.log('API Running...')
+app.listen(config.port, () => {  
+    console.log(`API Running... @:${config.port}`)
 })
