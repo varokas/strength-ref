@@ -20,6 +20,7 @@ app.use(bodyParser.json())
  * @apiDescription This endpoint should return a list of available seats in the current round
  * 
  * @apiSuccess {String[]} seats List of seat no. (Up to 10 seats)
+ * @apiSuccess {Number} unconfimedTicketsCount  Number of seat that reserved but not confirmed yet.
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    {
@@ -27,12 +28,14 @@ app.use(bodyParser.json())
  *        "A1",
  *        "A2",
  *        ...
- *      ]
+ *      ],
+ *      unconfimedTicketsCount: 2
  *    }
  */
 app.get('/remaining', function(req, res) {
     const result = book.getRemaining()
-    res.json({ seats: result })
+    const unconfirm = book.getUnconfirmed()
+    res.json({ seats: result, unconfimedTicketsCount: unconfirm.length })
 })
 
 /**

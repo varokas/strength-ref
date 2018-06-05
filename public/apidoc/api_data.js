@@ -65,13 +65,20 @@ define({ "api": [
             "optional": false,
             "field": "seats",
             "description": "<p>List of seat no. (Up to 10 seats)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "unconfimedTicketsCount",
+            "description": "<p>Number of seat that reserved but not confirmed yet.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 OK\n{\n  \"seats\": [\n    \"A1\",\n    \"A2\",\n    ...\n  ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"seats\": [\n    \"A1\",\n    \"A2\",\n    ...\n  ],\n  unconfimedTicketsCount: 2\n}",
           "type": "json"
         }
       ]
@@ -90,7 +97,7 @@ define({ "api": [
     "url": "/book",
     "title": "Book the Seat",
     "group": "Tickets",
-    "description": "<p>This endpoint required seat no. from user and will return the ticket if it available, otherwise will return false</p> <p>Rule:</p> <ol> <li>No duplicate tickets (same round, same seat) can be given to any clients</li> <li>All seats in the current round has to be given out first before next round can be open.</li> <li>Seats can be given out in any order that still respect rule (2).</li> </ol>",
+    "description": "<p>This endpoint required seat no. and will return the ticket if it available, otherwise will return false</p> <p>Rule:</p> <ol> <li>No duplicate tickets (same round, same seat) can be given to any clients</li> <li>All seats in the current round has to be given out first before next round can be open.</li> <li>Seats can be given out in any order that still respect rule (2).</li> </ol>",
     "parameter": {
       "fields": {
         "Parameter": [
