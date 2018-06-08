@@ -1,4 +1,5 @@
 # Bear Strength Reference Implementation
+[![Build Status](https://travis-ci.org/tspn/strength-ref.svg?branch=master)](https://travis-ci.org/tspn/strength-ref)
 
 From this project: https://github.com/bigbearsio/strength
 
