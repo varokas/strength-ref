@@ -45,21 +45,18 @@ app.get('/remaining', (req, res) => {
  * @apiDescription This endpoint required seat no. and will return the ticket if it available, otherwise will return false
  * 
  * Rule:
- * 1. No duplicate tickets (same round, same seat) can be given to any clients
- * 2. All seats in the current round has to be given out first before next round can be open.
- * 3. Seats can be given out in any order that still respect rule (2).
+ * 1. No duplicate tickets (same seat) can be given to any clients
+ * 2. Seats can be given out in any order that still respect rule (2).
  * 
  * @apiParam {String} seat The seat no. that user want to reserve.
  * 
  * @apiSuccess {Boolean} success Status of seat reservation
- * @apiSuccess {Number} round Round number for this ticket
  * @apiSuccess {String} seat Seat for this ticket
  * @apiSuccess {Number} reserve_expired_time Reservation expired time in timestamp
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    {
  *      "success": true,
- *      "round": 1,
  *      "seat": "A1",
  *      "reserve_expired_time": 1527009296459
  *    }
@@ -105,7 +102,7 @@ app.post('/confirm', (req, res) => {
 /**
  * @api {post} /cancel Cancel Ticket
  * @apiGroup Tickets
- * @apiDescription This endpoint could be called to cancel any confirmed or reserved ticket in the current round and then another user can have that seat
+ * @apiDescription This endpoint could be called to cancel any confirmed or reserved ticket for another user can have that seat afterwards
  * 
  * @apiParam {String} seat The seat no. to cancel
  * 
